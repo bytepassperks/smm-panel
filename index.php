@@ -104,6 +104,15 @@ $routes = [
     'register' => 'pages/register.php',
     'dashboard' => 'pages/dashboard.php',
     'order' => 'pages/order.php',
+    // Admin routes
+    'admin/login' => 'pages/admin/login.php',
+    'admin/dashboard' => 'pages/admin/dashboard.php',
+    'admin/services' => 'pages/admin/services.php',
+    'admin/users' => 'pages/admin/users.php',
+    'admin/orders' => 'pages/admin/orders.php',
+    'admin/settings' => 'pages/admin/settings.php',
+    'admin/logout' => 'pages/admin/logout.php',
+    // API routes
     'api/services' => 'api/services.php',
     'api/order' => 'api/order.php',
     'api/status' => 'api/status.php',
