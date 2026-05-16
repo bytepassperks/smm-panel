@@ -1,9 +1,10 @@
-# SMM Panel - PHP 8.2 + Nginx
-FROM php:8.2-fpm
+# SMM Panel - Simple setup
+FROM php:8.3-fpm
 
-RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
-
-RUN docker-php-ext-install pdo pdo_pgsql
+RUN apt-get update && apt-get install -y \
+    nginx \
+    php-pgsql \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY . /var/www/html/
