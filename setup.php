@@ -20,30 +20,49 @@ try {
     // Read schema file
     $schema = file_get_contents(__DIR__ . '/schema.sql');
 
-    // Split by semicolons to get individual statements
-    $statements = array_filter(array_map('trim', explode(';', $schema)));
+    // Remove comments and split by semicolons
+    $lines = explode("\n", $schema);
+    $cleanSql = '';
+    foreach ($lines as $line) {
+        // Remove single-line comments
+        $pos = strpos($line, '--');
+        if ($pos !== false) {
+            $line = substr($line, 0, $pos);
+        }
+        $cleanSql .= $line . "\n";
+    }
+
+    // Split by semicolons
+    $statements = array_filter(array_map('trim', explode(';', $cleanSql)));
 
     $count = 0;
+    $errors = 0;
     foreach ($statements as $sql) {
-        if (empty($sql) || strpos($sql, '--') === 0) continue;
+        if (empty($sql)) continue;
 
         try {
             $pdo->exec($sql);
             $count++;
-            echo "Executed: " . substr($sql, 0, 50) . "...\n";
         } catch (Exception $e) {
-            // Ignore duplicate key errors
-            if (strpos($e->getMessage(), 'duplicate') === false) {
-                echo "Error: " . $e->getMessage() . "\n";
+            $errors++;
+            $msg = $e->getMessage();
+            // Only show non-duplicate errors
+            if (strpos($msg, 'duplicate') === false && strpos($msg, 'already exists') === false) {
+                echo "Error: " . substr($sql, 0, 60) . "... - " . $msg . "\n";
             }
         }
     }
 
-    echo "\nDone! Executed $count statements.\n";
+    echo "Executed $count statements with $errors warnings.\n";
 
     // Verify tables
     $tables = $pdo->query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name");
-    echo "\nTables created: " . implode(', ', $tables->fetchAll(PDO::FETCH_COLUMN)) . "\n";
+    $tableList = $tables->fetchAll(PDO::FETCH_COLUMN);
+    echo "Tables created: " . implode(', ', $tableList) . "\n";
+
+    if (in_array('users', $tableList)) {
+        echo "\nDatabase setup complete!\n";
+    }
 
 } catch (Exception $e) {
     die("Error: " . $e->getMessage() . "\n");
