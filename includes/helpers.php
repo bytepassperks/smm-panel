@@ -326,7 +326,7 @@ function jsonError(string $message, int $statusCode = 400, $errors = null): void
  * @param string $format
  * @return string
  */
-function formatDateTime(?string $datetime, string = 'd M Y, h:i A'): string
+function formatDateTime(?string $datetime, string $format = 'd M Y, h:i A'): string
 {
     if (!$datetime) {
         return 'N/A';
