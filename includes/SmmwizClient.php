@@ -49,8 +49,11 @@ class SmmwizClient
      */
     private function request(string $endpoint, array $data = []): array
     {
-        $url = rtrim($this->baseUrl, '/') . '/' . ltrim($endpoint, '/');
+        // Smmwiz API uses single endpoint with action in POST data
+        $url = rtrim($this->baseUrl, '/');
 
+        // Add action to POST data
+        $data['action'] = $endpoint;
         $data['key'] = $this->apiKey;
 
         $this->lastRequest = [
