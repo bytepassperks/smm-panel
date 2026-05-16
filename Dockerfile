@@ -24,5 +24,9 @@ WORKDIR /var/www/html
 # Expose port
 EXPOSE 10000
 
-# Start PHP-FPM and Nginx
-CMD bash -c "php-fpm & nginx -g 'daemon off;'"
+# Copy and set start script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Start with environment variables
+CMD ["/start.sh"]
