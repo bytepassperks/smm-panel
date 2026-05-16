@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # PHP configuration - PostgreSQL
-RUN docker-php-ext-install pdo pgsql
+RUN apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pdo pgsql
 
 # Copy nginx config
 COPY nginx.conf /etc/nginx/nginx.conf
