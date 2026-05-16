@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y \
     nginx \
     && rm -rf /var/lib/apt/lists/*
 
-# PHP configuration
-RUN docker-php-ext-install pdo pdo_mysql
+# PHP configuration - PostgreSQL
+RUN docker-php-ext-install pdo pgsql
 
 # Copy nginx config
 COPY nginx.conf /etc/nginx/nginx.conf
