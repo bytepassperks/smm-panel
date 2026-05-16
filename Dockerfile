@@ -90,6 +90,12 @@ ENV PHP_POST_MAX_SIZE=25M
 EXPOSE 10000
 
 # =====================================================
-# Start Supervisor (runs PHP-FPM + Nginx)
+# Start Script
 # =====================================================
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisor.conf"]
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# =====================================================
+# Start Services
+# =====================================================
+CMD ["/start.sh"]
