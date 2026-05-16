@@ -133,8 +133,19 @@ class SmmwizClient
     {
         $response = $this->request('services');
 
-        // Smmwiz returns services as 'services' or 'data' key
-        $services = $response['services'] ?? $response['data'] ?? [];
+        // Smmwiz returns services as raw array or as 'services' or 'data' key
+        $services = [];
+        if (is_array($response)) {
+            // Check if it's a direct array or wrapped in object
+            if (isset($response['services'])) {
+                $services = $response['services'];
+            } elseif (isset($response['data'])) {
+                $services = $response['data'];
+            } else {
+                // Direct array response
+                $services = $response;
+            }
+        }
 
         // Normalize service structure
         return array_map(function ($service) {
