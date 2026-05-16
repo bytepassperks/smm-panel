@@ -1,27 +1,21 @@
-# SMM Panel - Docker Production Image
-# PHP 8.3-FPM + Nginx
+# SMM Panel - Simple PHP-FPM + Nginx
+FROM php:8.3-fpm
 
-FROM php:8.3-fpm-slim
-
-# Install nginx and required packages
+# Install nginx only
 RUN apt-get update && apt-get install -y \
     nginx \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-install pdo pdo_pgsql pgsql
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy nginx config
+# Install PostgreSQL extensions
+RUN docker-php-ext-install pdo pgsql
+
+# Setup app
 COPY nginx.conf /etc/nginx/nginx.conf
-
-# Copy app
 COPY . /var/www/html/
-RUN mkdir -p /var/www/html/{assets/{css,js,images},uploads,logs,tmp}
-
+RUN mkdir -p /var/www/html/{assets,uploads,logs,tmp}
 WORKDIR /var/www/html
-
 EXPOSE 10000
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
-
 CMD ["/start.sh"]
