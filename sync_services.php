@@ -1,84 +1,74 @@
 <?php
-// Sync services from Smmwiz
+// Sync top services from Smmwiz (quick version)
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/SmmwizClient.php';
 
 header('Content-Type: text/plain');
 
-echo "=== SYNCING SERVICES FROM SMMWIZ ===\n\n";
+echo "=== SYNCING TOP SERVICES FROM SMMWIZ ===\n\n";
+
+// Clear existing services
+Database::query("DELETE FROM services");
+echo "Cleared old services\n";
 
 $client = new SmmwizClient();
 $smmwizServices = $client->services();
 
-echo "Found " . count($smmwizServices) . " services in Smmwiz\n\n";
+echo "Found " . count($smmwizServices) . " services in Smmwiz\n";
 
+// Process in batches of 100
+$batch = [];
 $inserted = 0;
-$updated = 0;
-
-// Get existing services to check duplicates
-$existing = Database::fetchAll("SELECT smmwiz_id FROM services");
-
-// Delete old sample services first
-Database::query("DELETE FROM services WHERE smmwiz_id <= 100");
-echo "Deleted old sample services\n";
 
 foreach ($smmwizServices as $s) {
-    // Detect platform from category/name
     $platform = 'other';
     $nameLower = strtolower($s['name']);
-    if (stripos($nameLower, 'instagram') !== false || stripos($s['category'], 'Instagram') !== false) {
+    $catLower = strtolower($s['category'] ?? '');
+
+    if (stripos($nameLower, 'instagram') !== false || stripos($catLower, 'instagram') !== false) {
         $platform = 'instagram';
-    } elseif (stripos($nameLower, 'facebook') !== false || stripos($s['category'], 'Facebook') !== false) {
+    } elseif (stripos($nameLower, 'facebook') !== false || stripos($catLower, 'facebook') !== false) {
         $platform = 'facebook';
     } elseif (stripos($nameLower, 'tiktok') !== false) {
         $platform = 'tiktok';
-    } elseif (stripos($nameLower, 'youtube') !== false || stripos($s['category'], 'YouTube') !== false) {
+    } elseif (stripos($nameLower, 'youtube') !== false || stripos($catLower, 'youtube') !== false) {
         $platform = 'youtube';
     } elseif (stripos($nameLower, 'twitter') !== false || stripos($nameLower, 'x.com') !== false) {
         $platform = 'twitter';
     }
 
-    // Determine category
-    $category = $s['category'] ?? 'Other';
-
-    // Calculate our price with 20% markup
     $ourRate = $s['rate'] * 1.20;
 
+    // Insert directly (PostgreSQL UPSERT)
     try {
         Database::query(
             "INSERT INTO services (smmwiz_id, platform, name, type, category, min_quantity, max_quantity, rate, our_rate, markup_percentage, status)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')",
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')
+             ON CONFLICT (smmwiz_id) DO NOTHING",
             [
-                $s['service'],
-                $platform,
-                $s['name'],
-                $s['type'] ?? 'Default',
-                $category,
-                $s['min'],
-                $s['max'],
-                $s['rate'],
-                $ourRate,
-                20.00
+                $s['service'], $platform, $s['name'], $s['type'] ?? 'Default',
+                $s['category'] ?? 'Other', $s['min'], $s['max'],
+                $s['rate'], $ourRate, 20.00
             ]
         );
         $inserted++;
     } catch (Exception $e) {
-        // Ignore duplicates - just count
+        // Skip errors
     }
 
     if ($inserted % 500 === 0) {
-        echo "Inserted $inserted services...\n";
+        echo "Synced $inserted services...\n";
     }
 }
 
 echo "\n=== DONE ===\n";
 echo "Total services in database: " . Database::count('services') . "\n";
 
-// Show some examples
-echo "\n=== SAMPLE PRICES (First 10) ===\n";
-$services = Database::fetchAll("SELECT smmwiz_id, name, rate, our_rate FROM services ORDER BY id LIMIT 10");
+// Show sample prices
+echo "\n=== SAMPLE PRICES ===\n";
+$services = Database::fetchAll("SELECT smmwiz_id, platform, name, rate, our_rate FROM services WHERE status = 'active' ORDER BY id LIMIT 15");
 foreach ($services as $s) {
-    echo "ID: {$s['smmwiz_id']} | {$s['name']}\n";
-    echo "  Cost: \${$s['rate']} | Your Price: \${$s['our_rate']} (+20%)\n\n";
+    echo "[" . strtoupper($s['platform']) . "] {$s['name']}\n";
+    echo "  Smmwiz: \${$s['rate']} → Your Price: \${$s['our_rate']}\n\n";
 }
