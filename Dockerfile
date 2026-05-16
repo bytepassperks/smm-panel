@@ -1,14 +1,13 @@
 # SMM Panel - Docker Production Image
 # PHP 8.3-FPM + Nginx + PostgreSQL
 
-FROM php:8.3-fpm-bookworm
+FROM php:8.3-fpm-alpine
 
-# Install all dependencies at once
-RUN apt-get update && apt-get install -y \
+# Install nginx and postgresql-dev
+RUN apk add --no-cache \
     nginx \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-install pdo pgsql
+    postgresql-dev \
+    && docker-php-ext-install pdo pdo_pgsql pgsql
 
 # Copy nginx config
 COPY nginx.conf /etc/nginx/nginx.conf
