@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y \
     nginx \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-install pdo pdo_pgsql
+    && docker-php-ext-install pdo pdo_pgsql pgsql
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY . /var/www/html/
