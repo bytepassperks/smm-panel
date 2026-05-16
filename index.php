@@ -91,8 +91,9 @@ require_once __DIR__ . '/includes/helpers.php';
 $requestUri = $_SERVER['REQUEST_URI'];
 $scriptName = dirname($_SERVER['SCRIPT_NAME']);
 
-// Remove script name from URI
+// Remove script name and query string from URI
 $path = str_replace($scriptName, '', $requestUri);
+$path = parse_url($path, PHP_URL_PATH);
 $path = trim($path, '/');
 
 // Route to appropriate page
