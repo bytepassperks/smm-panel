@@ -101,10 +101,13 @@ spl_autoload_register(function (string $class): void {
     }
 });
 
-// Initialize database connection
+// Initialize database connection (graceful - don't crash if DB unavailable)
+$GLOBALS['db_available'] = false;
 try {
     require_once __DIR__ . '/includes/db.php';
     Database::getInstance();
+    $GLOBALS['db_available'] = true;
 } catch (Exception $e) {
     error_log("Database connection failed: " . $e->getMessage());
+    $GLOBALS['db_error'] = $e->getMessage();
 }
