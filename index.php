@@ -88,12 +88,7 @@ if (!isset($GLOBALS['db_available']) || !$GLOBALS['db_available']) {
 require_once __DIR__ . '/includes/helpers.php';
 
 // Simple router for SEO-friendly URLs
-$requestUri = $_SERVER['REQUEST_URI'];
-$scriptName = dirname($_SERVER['SCRIPT_NAME']);
-
-// Remove script name and query string from URI
-$path = str_replace($scriptName, '', $requestUri);
-$path = parse_url($path, PHP_URL_PATH);
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $path = trim($path, '/');
 
 // Route to appropriate page
