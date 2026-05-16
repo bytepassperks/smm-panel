@@ -3,8 +3,9 @@ FROM php:8.3-fpm
 
 RUN apt-get update && apt-get install -y \
     nginx \
-    php8.3-pgsql \
-    && rm -rf /var/lib/apt/lists/*
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-install pdo pdo_pgsql
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY . /var/www/html/
