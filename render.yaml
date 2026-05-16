@@ -4,30 +4,9 @@ services:
     env: docker
     repo: https://github.com/bytepassperks/smm-panel.git
     region: oregon
-    buildCommand: ""
-    startCommand: ""
-    envVars:
-      - key: DB_HOST
-        value: 10.60.139.53
-      - key: DB_PORT
-        value: 3306
-      - key: DB_NAME
-        value: h6i63l3c0u
-      - key: DB_USER
-        value: h6i63l3c0u
-      - key: DB_PASS
-        value: 8-Jos-!4xZ2p
-      - key: SMMWIZ_API_KEY
-        value: 590d78f5f73a1e4a5816fa7c997e0bf6
-      - key: SMMWIZ_API_URL
-        value: https://smmwiz.com/api/v2
-      - key: SITE_NAME
-        value: SMM Panel
-      - key: SITE_URL
-        value: https://smm-panel.onrender.com
-      - key: SITE_EMAIL
-        value: support@bytepassperks.com
-      - key: APP_ENV
-        value: production
-      - key: DEFAULT_MARKUP
-        value: 20.00
+
+databases:
+  - name: smm-panel-db
+    type: mysql
+    plan: free
+    region: oregon
