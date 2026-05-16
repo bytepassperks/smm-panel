@@ -51,7 +51,7 @@ if (!$userId) {
 }
 
 // Get user from database
-$user = Database::fetch("SELECT * FROM users WHERE id = ? AND is_active = 1", [$userId]);
+$user = Database::fetch("SELECT * FROM users WHERE id = ? AND is_active = true", [$userId]);
 
 if (!$user) {
     jsonError('User not found or inactive', 401);

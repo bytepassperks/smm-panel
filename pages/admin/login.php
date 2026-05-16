@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         $user = Database::fetch(
-            "SELECT id, username, password, role FROM users WHERE username = ? AND role = 'admin' AND is_active = 1",
+            "SELECT id, username, password, role FROM users WHERE username = ? AND role = 'admin' AND is_active = true",
             [$username]
         );
 

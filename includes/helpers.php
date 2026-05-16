@@ -127,7 +127,7 @@ function currentUser(): ?array
     }
 
     return Database::fetch(
-        "SELECT id, email, username, role, balance FROM users WHERE id = ? AND is_active = 1",
+        "SELECT id, email, username, role, balance FROM users WHERE id = ? AND is_active = true",
         [$_SESSION['user_id']]
     );
 }
