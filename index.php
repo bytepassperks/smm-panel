@@ -3,10 +3,20 @@
  * SMM Panel - Main Entry Point
  * With graceful handling of database unavailability
  *
- * @version 1.1
+ * @version 1.2
  */
 
+// Debug: Show environment info
+ini_set('display_errors', '1');
+error_reporting(E_ALL);
+
 require_once __DIR__ . '/config.php';
+
+// Debug: Log what we got
+error_log("DB_HOST: " . (defined('DB_HOST') ? DB_HOST : 'not defined'));
+error_log("DB_NAME: " . (defined('DB_NAME') ? DB_NAME : 'not defined'));
+error_log("db_available: " . ($GLOBALS['db_available'] ?? 'not set'));
+error_log("PDO drivers: " . implode(', ', PDO::getAvailableDrivers()));
 
 // Check if database is available
 if (!isset($GLOBALS['db_available']) || !$GLOBALS['db_available']) {
