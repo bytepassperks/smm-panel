@@ -25,4 +25,4 @@ WORKDIR /var/www/html
 EXPOSE 10000
 
 # Start PHP-FPM and Nginx
-CMD php-fpm8.3 & nginx -g 'daemon off;'
+CMD bash -c "php-fpm & nginx -g 'daemon off;'"
