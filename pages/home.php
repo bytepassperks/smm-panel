@@ -257,6 +257,7 @@ $faqSchema = [
                 <ul class="nav-links">
                     <li><a href="/" class="nav-link">Home</a></li>
                     <li><a href="/services" class="nav-link">Services</a></li>
+                    <li><a href="/pricing" class="nav-link">Pricing</a></li>
                     <li><a href="/faq" class="nav-link">FAQ</a></li>
                     <li><a href="/terms" class="nav-link">Terms</a></li>
                     <li><a href="/privacy" class="nav-link">Privacy</a></li>

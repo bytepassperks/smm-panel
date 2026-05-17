@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://your-smm-panel.com/sitemap.xml
+
+# Disallow admin areas
+Disallow: /pages/admin/
+Disallow: /api/
+Disallow: /cron/
+
+# Allow public pages
+Allow: /pages/*.php

@@ -179,6 +179,7 @@ $platforms = [
                 <ul class="nav-links">
                     <li><a href="/" class="active">Home</a></li>
                     <li><a href="/services">Services</a></li>
+                    <li><a href="/pricing">Pricing</a></li>
                     <li><a href="/faq">FAQ</a></li>
                     <li><a href="/terms">Terms</a></li>
                     <li><a href="/login" class="btn btn-outline">Login</a></li>
