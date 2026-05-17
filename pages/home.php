@@ -14,6 +14,7 @@
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/helpers.php';
+require_once __DIR__ . '/../components/svg_icons.php';
 
 // =====================================================
 // SEO CONFIGURATION
@@ -242,13 +243,16 @@ $faqSchema = [
         <div class="container">
             <nav class="navbar">
                 <a href="/" class="logo">
-                    <span class="logo-icon">📊</span>
+                    <span class="logo-icon"><?= getIcon('logo') ?></span>
                     <span class="logo-text"><?= htmlspecialchars($siteName) ?></span>
                 </a>
                 <button class="hamburger" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
                     <span></span>
+                </button>
+                <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode">
+                    <?= getIcon('moon') ?>
                 </button>
                 <ul class="nav-links">
                     <li><a href="/" class="nav-link">Home</a></li>
@@ -300,22 +304,22 @@ $faqSchema = [
                 <h2 class="section-title">Why Choose <?= htmlspecialchars($siteName) ?>?</h2>
                 <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-icon">⚡</div>
+                        <div class="feature-icon"><?= getIcon('zap') ?></div>
                         <h3>Fast Delivery</h3>
                         <p>Most orders start within minutes. Get your followers and likes delivered quickly.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">🔄</div>
+                        <div class="feature-icon"><?= getIcon('refresh') ?></div>
                         <h3>30-Day Refill</h3>
                         <p>We offer refill guarantee on most services. If numbers drop, we refill them free.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">🔒</div>
+                        <div class="feature-icon"><?= getIcon('shield') ?></div>
                         <h3>Secure Payments</h3>
                         <p>Your payments are secure with encryption. Multiple payment options available.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">💰</div>
+                        <div class="feature-icon"><?= getIcon('wallet') ?></div>
                         <h3>Best Prices</h3>
                         <p>Competitive pricing with markup as low as 20%. Great value for quality service.</p>
                     </div>
@@ -331,15 +335,7 @@ $faqSchema = [
                     <?php foreach ($featuredServices as $service): ?>
                     <a href="/services?service=<?= urlencode($service['name']) ?>" class="service-card">
                         <div class="service-icon">
-                            <?php
-                            $icons = [
-                                'instagram' => '📸',
-                                'facebook' => '📘',
-                                'tiktok' => '🎵',
-                                'youtube' => '▶️'
-                            ];
-                            echo $icons[$service['platform']] ?? '🌐';
-                            ?>
+                            <?= platformIcon($service['platform']) ?>
                         </div>
                         <h3><?= htmlspecialchars($service['name']) ?></h3>
                         <p class="service-price">From $<?= number_format($service['our_rate'] * $service['min_quantity'], 2) ?></p>
