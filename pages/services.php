@@ -250,6 +250,18 @@ $platforms = [
 
                                 <div class="service-meta">
                                     <div class="meta-item">
+                                        <span class="meta-label">Service ID</span>
+                                        <span class="meta-value">#<?= $service['smmwiz_id'] ?></span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label">Rate/1000</span>
+                                        <span class="meta-value">$<?= number_format($service['rate'], 4) ?></span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label">Your Price/1000</span>
+                                        <span class="meta-value" style="color:#10b981;font-weight:600;">$<?= number_format($service['our_rate'], 4) ?></span>
+                                    </div>
+                                    <div class="meta-item">
                                         <span class="meta-label">Min Order</span>
                                         <span class="meta-value"><?= number_format($service['min_quantity']) ?></span>
                                     </div>
