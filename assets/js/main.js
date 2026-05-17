@@ -1,361 +1,240 @@
 /**
  * SMM Panel - Main JavaScript
- * Production-ready JS with error handling and SEO-friendly behavior
+ * Complete overhaul with mobile menu, animations, dark mode, FOMO, etc.
  */
 
 (function() {
     'use strict';
 
-    // =====================================================
-    // Utilities
-    // =====================================================
+    // ===========================
+    // MOBILE HAMBURGER MENU
+    // ===========================
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    const body = document.body;
 
-    /**
-     * Get element by ID
-     */
-    const $ = (id) => document.getElementById(id);
-
-    /**
-     * Fetch wrapper with error handling
-     */
-    async function apiFetch(url, options = {}) {
-        try {
-            const response = await fetch(url, {
-                ...options,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    ...options.headers
-                },
-                credentials: 'same-origin'
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || 'Request failed');
-            }
-
-            return data;
-        } catch (error) {
-            console.error('API Error:', error);
-            throw error;
-        }
-    }
-
-    // =====================================================
-    // Order Form Handler
-    // =====================================================
-
-    const orderForm = document.getElementById('orderForm');
-    if (orderForm) {
-        orderForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const submitBtn = orderForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Processing...';
-
-            const formData = {
-                service_id: parseInt(orderForm.service_id.value),
-                link: orderForm.link.value.trim(),
-                quantity: parseInt(orderForm.quantity.value)
-            };
-
-            // Add optional fields
-            if (orderForm.runs) formData.runs = parseInt(orderForm.runs.value) || null;
-            if (orderForm.interval) formData.interval = parseInt(orderForm.interval.value) || null;
-            if (orderForm.custom_comments) formData.custom_comments = orderForm.custom_comments.value;
-
-            try {
-                const result = await apiFetch('/api/order.php', {
-                    method: 'POST',
-                    body: JSON.stringify(formData)
-                });
-
-                if (result.success) {
-                    showNotification('Order placed successfully!', 'success');
-                    orderForm.reset();
-                    updateBalance(result.data.remaining_balance);
-                }
-            } catch (error) {
-                showNotification(error.message, 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
-            }
-        });
-    }
-
-    // =====================================================
-    // Service Quantity Calculator
-    // =====================================================
-
-    const quantityInputs = document.querySelectorAll('input[name="quantity"]');
-    const priceDisplay = document.getElementById('priceDisplay');
-    const serviceRateInput = document.getElementById('serviceRate');
-
-    if (quantityInputs.length && priceDisplay && serviceRateInput) {
-        quantityInputs.forEach(input => {
-            input.addEventListener('input', calculatePrice);
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            body.classList.toggle('menu-open');
         });
 
-        function calculatePrice() {
-            const quantity = parseInt(this.value) || 0;
-            const rate = parseFloat(serviceRateInput.value) || 0;
-            const total = (quantity * rate).toFixed(2);
-            priceDisplay.textContent = `$${total}`;
-        }
-    }
-
-    // =====================================================
-    // Order Status Checker
-    // =====================================================
-
-    const statusCheckBtn = document.getElementById('checkStatusBtn');
-    const statusInput = document.getElementById('orderIdInput');
-    const statusResult = document.getElementById('statusResult');
-
-    if (statusCheckBtn && statusInput) {
-        statusCheckBtn.addEventListener('click', async () => {
-            const orderId = statusInput.value.trim();
-
-            if (!orderId) {
-                showNotification('Please enter an order ID', 'error');
-                return;
-            }
-
-            try {
-                const result = await apiFetch(`/api/status.php?id=${orderId}`);
-
-                if (result.success) {
-                    const data = result.data;
-                    statusResult.innerHTML = `
-                        <div class="status-info">
-                            <p><strong>Order ID:</strong> ${data.order_id}</p>
-                            <p><strong>Service:</strong> ${data.service_name}</p>
-                            <p><strong>Status:</strong> <span class="status-badge status-${data.status}">${data.status}</span></p>
-                            <p><strong>Quantity:</strong> ${data.quantity.delivered} / ${data.quantity.requested}</p>
-                            <p><strong>Created:</strong> ${data.created_at}</p>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                showNotification(error.message, 'error');
-            }
-        });
-    }
-
-    // =====================================================
-    // Balance Refresh
-    // =====================================================
-
-    const refreshBalanceBtn = document.getElementById('refreshBalanceBtn');
-    const balanceDisplay = document.getElementById('balanceDisplay');
-
-    if (refreshBalanceBtn) {
-        refreshBalanceBtn.addEventListener('click', async () => {
-            try {
-                const result = await apiFetch('/api/balance.php');
-                if (result.success) {
-                    updateBalance(result.data.balance.amount);
-                }
-            } catch (error) {
-                console.error('Failed to refresh balance:', error);
-            }
-        });
-    }
-
-    /**
-     * Update balance display
-     */
-    function updateBalance(amount) {
-        if (balanceDisplay) {
-            balanceDisplay.textContent = `$${parseFloat(amount).toFixed(2)}`;
-        }
-    }
-
-    // =====================================================
-    // Notifications / Toasts
-    // =====================================================
-
-    function showNotification(message, type = 'info') {
-        // Remove existing notifications
-        const existing = document.querySelector('.notification');
-        if (existing) existing.remove();
-
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            color: white;
-            font-weight: 500;
-            z-index: 10000;
-            animation: slideIn 0.3s ease;
-            background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-        `;
-
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.remove();
-        }, 5000);
-    }
-
-    // Add animation
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-    `;
-    document.head.appendChild(style);
-
-    // =====================================================
-    // Auto-sync Indicator (for cron)
-    // =====================================================
-
-    const syncIndicator = document.getElementById('syncIndicator');
-    if (syncIndicator) {
-        // Simulate sync status (in real implementation, this would check API)
-        setInterval(() => {
-            syncIndicator.classList.add('syncing');
-            setTimeout(() => syncIndicator.classList.remove('syncing'), 2000);
-        }, 60000);
-    }
-
-    // =====================================================
-    // Service Filtering
-    // =====================================================
-
-    const platformFilters = document.querySelectorAll('.filter-tab');
-    const serviceCards = document.querySelectorAll('.service-card');
-
-    platformFilters.forEach(filter => {
-        filter.addEventListener('click', (e) => {
-            e.preventDefault();
-            const platform = filter.dataset.platform || filter.getAttribute('href').split('=')[1] || 'all';
-
-            // Update active state
-            platformFilters.forEach(f => f.classList.remove('active'));
-            filter.classList.add('active');
-
-            // Filter cards
-            serviceCards.forEach(card => {
-                if (platform === 'all' || card.dataset.platform === platform) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    });
-
-    // =====================================================
-    // Search Functionality
-    // =====================================================
-
-    const searchInput = document.getElementById('serviceSearch');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-
-            serviceCards.forEach(card => {
-                const name = card.querySelector('h3').textContent.toLowerCase();
-                const description = card.querySelector('.service-description')?.textContent.toLowerCase() || '';
-
-                if (name.includes(term) || description.includes(term)) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    }
-
-    // =====================================================
-    // FAQ Accordion
-    // =====================================================
-
-    const faqItems = document.querySelectorAll('.faq-item');
-    faqItems.forEach(item => {
-        const summary = item.querySelector('summary');
-        const icon = summary.querySelector('.expand-icon');
-
-        item.addEventListener('toggle', () => {
-            icon.textContent = item.open ? '−' : '+';
-        });
-    });
-
-    // =====================================================
-    // Lazy Loading for Images
-    // =====================================================
-
-    if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                        imageObserver.unobserve(img);
-                    }
-                }
+        // Close on nav link click
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                body.classList.remove('menu-open');
             });
         });
 
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            imageObserver.observe(img);
+        // Close on outside click
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                body.classList.remove('menu-open');
+            }
         });
     }
 
-    // =====================================================
-    // Form Validation
-    // =====================================================
-
-    const validateForm = (form) => {
-        let isValid = true;
-        const inputs = form.querySelectorAll('input[required]');
-
-        inputs.forEach(input => {
-            if (!input.value.trim()) {
-                input.classList.add('error');
-                isValid = false;
+    // ===========================
+    // STICKY HEADER
+    // ===========================
+    const header = document.querySelector('.header');
+    if (header) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
             } else {
-                input.classList.remove('error');
+                header.classList.remove('scrolled');
             }
         });
+    }
 
-        return isValid;
+    // ===========================
+    // SCROLL ANIMATIONS
+    // ===========================
+    const animateOnScroll = () => {
+        const elements = document.querySelectorAll('.service-card, .feature-card, .step, .info-card, .stat');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('animated');
+                    }, index * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        elements.forEach(el => {
+            el.classList.add('fade-in-up');
+            observer.observe(el);
+        });
     };
 
-    // Add error class styling
-    const errorStyle = document.createElement('style');
-    errorStyle.textContent = `
-        input.error { border-color: #ef4444 !important; }
-    `;
-    document.head.appendChild(errorStyle);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', animateOnScroll);
+    } else {
+        animateOnScroll();
+    }
 
-    // =====================================================
-    // Initialize
-    // =====================================================
+    // ===========================
+    // COUNTER ANIMATION
+    // ===========================
+    const animateCounters = () => {
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log('SMM Panel initialized');
+            const update = () => {
+                current += step;
+                if (current < target) {
+                    counter.textContent = Math.floor(current).toLocaleString();
+                    requestAnimationFrame(update);
+                } else {
+                    counter.textContent = target.toLocaleString();
+                }
+            };
+            update();
+        });
+    };
 
-        // Set current year in footer
-        const yearEl = document.getElementById('currentYear');
-        if (yearEl) {
-            yearEl.textContent = new Date().getFullYear();
-        }
+    const statsSection = document.querySelector('.hero-stats');
+    if (statsSection) {
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                animateCounters();
+                observer.unobserve(statsSection);
+            }
+        }, { threshold: 0.5 });
+        observer.observe(statsSection);
+    }
+
+    // ===========================
+    // FAQ ACCORDION
+    // ===========================
+    document.querySelectorAll('.faq-item summary').forEach(summary => {
+        summary.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.parentElement.classList.toggle('open');
+        });
+    });
+
+    // ===========================
+    // PRICE CALCULATOR
+    // ===========================
+    const serviceSelect = document.getElementById('serviceSelect');
+    const quantityInput = document.getElementById('quantity');
+    const totalPrice = document.getElementById('totalPrice');
+
+    if (serviceSelect && quantityInput && totalPrice) {
+        const updatePrice = () => {
+            const option = serviceSelect.options[serviceSelect.selectedIndex];
+            const rate = parseFloat(option?.dataset?.rate || 0);
+            const qty = parseInt(quantityInput.value || 0);
+            totalPrice.textContent = '$' + (rate * qty).toFixed(2);
+        };
+
+        serviceSelect.addEventListener('change', updatePrice);
+        quantityInput.addEventListener('input', updatePrice);
+    }
+
+    // ===========================
+    // PASSWORD TOGGLE
+    // ===========================
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            this.textContent = isPassword ? '🙈' : '👁️';
+        });
+    });
+
+    // ===========================
+    // PASSWORD STRENGTH
+    // ===========================
+    const passwordInput = document.getElementById('password');
+    const strengthBar = document.querySelector('.strength-bar');
+
+    if (passwordInput && strengthBar) {
+        passwordInput.addEventListener('input', function() {
+            const val = this.value;
+            let strength = 0;
+            if (val.length >= 8) strength++;
+            if (val.match(/[a-z]/) && val.match(/[A-Z]/)) strength++;
+            if (val.match(/\d/)) strength++;
+            if (val.match(/[^a-zA-Z\d]/)) strength++;
+
+            strengthBar.style.width = (strength * 25) + '%';
+            strengthBar.style.backgroundColor = ['#ef4444', '#f59e0b', '#10b981', '#6366f1'][strength - 1] || '#ef4444';
+        });
+    }
+
+    // ===========================
+    // COOKIE CONSENT
+    // ===========================
+    const cookieBanner = document.querySelector('.cookie-banner');
+    const acceptBtn = document.getElementById('acceptCookies');
+
+    if (cookieBanner && acceptBtn && !localStorage.getItem('cookiesAccepted')) {
+        cookieBanner.style.display = 'block';
+        acceptBtn.addEventListener('click', () => {
+            localStorage.setItem('cookiesAccepted', 'true');
+            cookieBanner.style.display = 'none';
+        });
+    }
+
+    // ===========================
+    // DARK MODE
+    // ===========================
+    const darkToggle = document.getElementById('darkModeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.body.classList.add('dark-mode');
+    }
+
+    if (darkToggle) {
+        darkToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
+    }
+
+    // ===========================
+    // ANNOUNCEMENT BAR
+    // ===========================
+    const announcementClose = document.querySelector('.announcement-close');
+    const announcementBar = document.querySelector('.announcement-bar');
+
+    if (announcementClose && announcementBar && !localStorage.getItem('announcementDismissed')) {
+        announcementClose.addEventListener('click', () => {
+            announcementBar.style.display = 'none';
+            localStorage.setItem('announcementDismissed', 'true');
+        });
+    }
+
+    // ===========================
+    // SMOOTH SCROLL
+    // ===========================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (targetId !== '#') {
+                e.preventDefault();
+                const target = document.querySelector(targetId);
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
     });
 
 })();

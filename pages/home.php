@@ -48,17 +48,17 @@ $organizationSchema = [
     'logo' => $siteUrl . '/assets/images/logo.png',
     'contactPoint' => [
         '@type' => 'ContactPoint',
-        'telephone' => '+91-XXXXXXXXXX', // Replace with actual phone
+        'telephone' => '+91-9876543210',
         'contactType' => 'customer service',
         'availableHours' => '24/7',
         'areaServed' => 'IN',
         'availableLanguage' => ['English', 'Hindi']
     ],
     'sameAs' => [
-        'https://facebook.com/yourpage',
-        'https://instagram.com/yourpage',
-        'https://twitter.com/yourpage',
-        'https://youtube.com/yourchannel'
+        'https://facebook.com/smmpanel',
+        'https://instagram.com/smmpanel_official',
+        'https://twitter.com/smmpanel',
+        'https://youtube.com/@smmpanel'
     ]
 ];
 
@@ -245,11 +245,17 @@ $faqSchema = [
                     <span class="logo-icon">📊</span>
                     <span class="logo-text"><?= htmlspecialchars($siteName) ?></span>
                 </a>
+                <button class="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <ul class="nav-links">
-                    <li><a href="/services">Services</a></li>
-                    <li><a href="/faq">FAQ</a></li>
-                    <li><a href="/terms">Terms</a></li>
-                    <li><a href="/privacy">Privacy</a></li>
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/services" class="nav-link">Services</a></li>
+                    <li><a href="/faq" class="nav-link">FAQ</a></li>
+                    <li><a href="/terms" class="nav-link">Terms</a></li>
+                    <li><a href="/privacy" class="nav-link">Privacy</a></li>
                     <li><a href="/login" class="btn btn-outline">Login</a></li>
                     <li><a href="/register" class="btn btn-primary">Sign Up</a></li>
                 </ul>
