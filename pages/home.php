@@ -365,6 +365,62 @@ $faqSchema = [
             </div>
         </section>
 
+        <!-- Logo Bar - Social Proof -->
+        <section class="logo-bar">
+            <div class="container">
+                <p class="logo-bar-text">Trusted by 500+ businesses & creators worldwide</p>
+                <div class="logo-bar-logos">
+                    <div class="logo-item"><span>🔥</span><span>BrandFire</span></div>
+                    <div class="logo-item"><span>📱</span><span>SocialPro</span></div>
+                    <div class="logo-item"><span>🚀</span><span>GrowthLab</span></div>
+                    <div class="logo-item"><span>💎</span><span>EliteCreators</span></div>
+                    <div class="logo-item"><span>⚡</span><span>ViralBuzz</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials">
+            <div class="container">
+                <h2 class="section-title">What Our Customers Say</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"Got 10K Instagram followers in just 3 days! The delivery was super fast and the quality is amazing. Highly recommended!"</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">👤</div>
+                            <div class="testimonial-info">
+                                <span class="testimonial-name">Rahul Sharma</span>
+                                <span class="testimonial-role">Content Creator</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"Best SMM panel in India! Their customer support is excellent and prices are very competitive. Been using for 6 months now."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">👤</div>
+                            <div class="testimonial-info">
+                                <span class="testimonial-name">Priya Singh</span>
+                                <span class="testimonial-role">Digital Marketer</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"Tried many panels before but this one is the best! Real followers, instant delivery, and great refill policy. 10/10!"</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">👤</div>
+                            <div class="testimonial-info">
+                                <span class="testimonial-name">Amit Kumar</span>
+                                <span class="testimonial-role">Influencer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Services Preview -->
         <section class="services-preview">
             <div class="container">

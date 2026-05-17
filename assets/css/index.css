@@ -511,6 +511,142 @@ main {
 }
 
 /* =====================================================
+   Logo Bar - Social Proof
+   ===================================================== */
+.logo-bar {
+    background: var(--bg-secondary);
+    padding: 2.5rem 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo-bar-text {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.logo-bar-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.logo-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    opacity: 0.7;
+    transition: opacity var(--transition);
+}
+
+.logo-item:hover {
+    opacity: 1;
+}
+
+.logo-item span:first-child {
+    font-size: 1.5rem;
+}
+
+/* =====================================================
+   Testimonials
+   ===================================================== */
+.testimonials {
+    background: var(--bg-primary);
+    padding: 5rem 0;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.testimonial-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.testimonial-stars {
+    color: #fbbf24;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+}
+
+.testimonial-text {
+    color: var(--text-primary);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.testimonial-avatar {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.testimonial-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.testimonial-role {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+/* Dark mode for social proof */
+body.dark-mode .logo-bar {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+body.dark-mode .testimonial-card {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+body.dark-mode .testimonial-avatar {
+    background: #334155;
+}
+
+/* =====================================================
    Sections
    ===================================================== */
 section {
