@@ -7,6 +7,12 @@
         <priority>1.0</priority>
     </url>
     <url>
+        <loc>https://your-smm-panel.com/global</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
         <loc>https://your-smm-panel.com/services</loc>
         <lastmod>2025-05-17</lastmod>
         <changefreq>weekly</changefreq>
@@ -16,6 +22,12 @@
         <loc>https://your-smm-panel.com/pricing</loc>
         <lastmod>2025-05-17</lastmod>
         <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://your-smm-panel.com/blog</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
@@ -48,6 +60,78 @@
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
+
+    <!-- Indian Cities -->
+    <url>
+        <loc>https://your-smm-panel.com/delhi</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://your-smm-panel.com/mumbai</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://your-smm-panel.com/bangalore</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://your-smm-panel.com/chennai</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://your-smm-panel.com/hyderabad</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://your-smm-panel.com/kolkata</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- International -->
+    <url>
+        <loc>https://your-smm-panel.com/usa</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://your-smm-panel.com/uk</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://your-smm-panel.com/uae</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://your-smm-panel.com/pakistan</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://your-smm-panel.com/bangladesh</loc>
+        <lastmod>2025-05-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Service Filters -->
     <url>
         <loc>https://your-smm-panel.com/services?platform=instagram</loc>
         <lastmod>2025-05-17</lastmod>
