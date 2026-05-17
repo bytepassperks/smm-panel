@@ -229,6 +229,38 @@
     }
 
     // ===========================
+    // COUNTDOWN TIMER
+    // ===========================
+    const countdownEl = document.getElementById('countdown');
+    if (countdownEl) {
+        // Get stored end time or set new one (24 hours from now)
+        let endTime = localStorage.getItem('promoCountdownEnd');
+        if (!endTime) {
+            endTime = Date.now() + 24 * 60 * 60 * 1000;
+            localStorage.setItem('promoCountdownEnd', endTime);
+        }
+
+        const updateCountdown = () => {
+            const remaining = parseInt(endTime) - Date.now();
+            if (remaining <= 0) {
+                // Reset for new day
+                endTime = Date.now() + 24 * 60 * 60 * 1000;
+                localStorage.setItem('promoCountdownEnd', endTime);
+                return;
+            }
+
+            const hours = Math.floor(remaining / (1000 * 60 * 60));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+            countdownEl.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        };
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
+    // ===========================
     // SMOOTH SCROLL
     // ===========================
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

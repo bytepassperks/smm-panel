@@ -268,30 +268,68 @@ $faqSchema = [
     </header>
 
     <main>
+        <!-- Announcement Bar (FOMO) -->
+        <div class="announcement-bar">
+            <div class="container">
+                <span class="announcement-badge">🔥 Limited Time</span>
+                <span class="announcement-text">Get 20% EXTRA on all orders with code <strong>SMM20</strong> - Offer ends in <span id="countdown">23:59:59</span></span>
+            </div>
+        </div>
+
         <!-- Hero Section -->
         <section class="hero">
+            <div class="hero-bg-pattern"></div>
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="hero-title">Boost Your Social Media Presence Instantly</h1>
-                    <p class="hero-subtitle">The #1 SMM panel for Instagram, Facebook, TikTok & YouTube. Real followers, likes, views at unbeatable prices.</p>
+                    <div class="hero-badge">
+                        <span class="pulse-dot"></span>
+                        #1 Rated SMM Panel in India
+                    </div>
+                    <h1 class="hero-title">Boost Your <span class="gradient-text">Social Media</span> Presence Instantly</h1>
+                    <p class="hero-subtitle">Join 10,000+ creators growing their audience with real followers, likes & views. Starting at just $0.50. No fake accounts, just real growth.</p>
 
                     <div class="hero-cta">
                         <a href="/services" class="btn btn-primary btn-lg">Browse Services</a>
                         <a href="/register" class="btn btn-secondary btn-lg">Get Started Free</a>
                     </div>
 
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <?= getIcon('shield') ?>
+                            <span>100% Safe & Secure</span>
+                        </div>
+                        <div class="trust-badge">
+                            <?= getIcon('refresh') ?>
+                            <span>30-Day Refill Guarantee</span>
+                        </div>
+                        <div class="trust-badge">
+                            <?= getIcon('zap') ?>
+                            <span>Instant Delivery</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-activity">
+                        <div class="activity-avatars">
+                            <span class="avatar">👤</span>
+                            <span class="avatar">👤</span>
+                            <span class="avatar">👤</span>
+                            <span class="avatar">+</span>
+                        </div>
+                        <span class="activity-text"><strong>247 people</strong> are viewing this page right now</span>
+                    </div>
+
                     <div class="hero-stats">
                         <div class="stat">
-                            <span class="stat-number">50K+</span>
+                            <span class="stat-number counter" data-target="50000">0</span>
                             <span class="stat-label">Orders Delivered</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-number">10K+</span>
+                            <span class="stat-number counter" data-target="10000">0</span>
                             <span class="stat-label">Happy Customers</span>
                         </div>
                         <div class="stat">
                             <span class="stat-number">24/7</span>
-                            <span class="stat-label">Support</span>
+                            <span class="stat-label">Live Support</span>
                         </div>
                     </div>
                 </div>
